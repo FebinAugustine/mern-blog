@@ -2,33 +2,29 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 
-export const signup = async (req, res, next) => {
-  console.log(req.body);
-
-  const { userName, email, password } = req.body;
-
-  if (
-    !userName ||
-    !email ||
-    !password ||
-    userName === "" ||
-    email === "" ||
-    password === ""
-  ) {
-    console.log("All fields are required");
-    // return res.status(404).json({ message: "All fields are required" });
-    next(errorHandler(400, "All fields are required"));
-  }
-
-  const hashedPassword = bcryptjs.hashSync(password, 10);
-
-  const newUser = new User({ userName, email, password: hashedPassword });
-
+export const signup = async (req, res) => {
   try {
-    await newUser.save();
+    const { userName, email, password } = req.body;
 
-    res.json("SignUp Successful");
+    const user = await User.findOne({ email });
+
+    if (user) {
+      return res
+        .status(401)
+        .json({ success: false, message: "User with email already exist" });
+    }
+
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+    const newUser = new User({ userName, email, password: hashedPassword });
+
+    await newUser.save();
+    return res
+      .status(200)
+      .json({ success: true, message: "Registration success" });
   } catch (error) {
-    next(error);
+    console.log(error.message);
+    return res
+      .status(500)
+      .json({ success: false, message: "Registration failed" });
   }
 };
