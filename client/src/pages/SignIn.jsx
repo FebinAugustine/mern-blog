@@ -54,11 +54,11 @@ export default function SignIn() {
     }
   };
   return (
-    <div className="min-h-screen mt-20">
-      <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-4">
+    <div className="min-h-screen  bg-white dark:bg-gray-700">
+      <div className="flex p-3 max-w-3xl  mx-auto flex-col md:flex-row md:items-center gap-4 ">
         {/* Left */}
-        <div className="flex-1">
-          <Link to="/" className="font-bold dark:text-white text-4xl">
+        <div className="flex-1 mt-20">
+          <Link to="/" className="font-bold text-4xl">
             <span
               className="px-1 py-1 bg-gradient-to-r from-indigo-500
          via-purple-500 to-pink-500 rounded-lg text-white"
@@ -73,7 +73,7 @@ export default function SignIn() {
           </p>
         </div>
         {/* Right */}
-        <div className="flex-1">
+        <div className="flex-1 mt-20">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <Label value="User Email"></Label>
