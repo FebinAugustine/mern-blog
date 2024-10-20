@@ -70,3 +70,56 @@ export const signin = async (req, res) => {
       .json({ success: false, message: "Invalid Password" });
   }
 };
+
+export const google = async (req, res) => {
+  const { userName, email, googlePhotoURL } = req.body;
+
+  try {
+    const validUser = await User.findOne({ email });
+    if (validUser) {
+      const token = jwt.sign(
+        { id: validUser._id },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "1d",
+        }
+      );
+
+      const { password: pass, ...rest } = validUser._doc;
+      return res
+        .status(200)
+        .cookie("access_token", token, { httpOnly: true })
+        .json(rest);
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const newUser = new User({
+        userName:
+          userName.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4),
+        email: email,
+        password: hashedPassword,
+        profilePic: googlePhotoURL,
+      });
+      await newUser.save();
+      const token = jwt.sign(
+        { id: validUnewUser._id },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "1d",
+        }
+      );
+
+      const { password: pass, ...rest } = newUser._doc;
+      return res
+        .status(200)
+        .cookie("access_token", token, { httpOnly: true })
+        .json(rest);
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res
+      .status(500)
+      .json({ success: false, message: "Invalid Password" });
+  }
+};
