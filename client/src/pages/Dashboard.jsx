@@ -21,7 +21,9 @@ export default function Dashboard() {
         <DashSidebar />
       </div>
       {/* Main Content */}
-      <div className="">{tab === "profile" && <DashProfile />}</div>
+      <div className=" max-w-lg w-full mx-auto">
+        {tab === "profile" && <DashProfile />}
+      </div>
     </div>
   );
 }
