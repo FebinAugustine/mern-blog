@@ -14,24 +14,24 @@ export default function DashSidebar() {
       setTab(tabFromUrl);
     }
   }, [location.search]);
-  const gotoProfile = () => {
-    <Link to="/dashboard?tab=profile" />;
-  };
+
   return (
     <Sidebar className="dark:bg-gray-800 dark:text-white w-full md:w-56">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {/* */}
-          <Sidebar.Item
-            active={tab === "profile"}
-            icon={HiUser}
-            label={"User"}
-            labelColor="dark"
-            onClick={gotoProfile()}
-            className="cursor-pointer"
-          >
-            Profile
-          </Sidebar.Item>
+          <Link to="/dashboard?tab=profile">
+            <Sidebar.Item
+              active={tab === "profile"}
+              icon={HiUser}
+              label={"User"}
+              labelColor="dark"
+              className="cursor-pointer"
+              as="div"
+            >
+              Profile
+            </Sidebar.Item>
+          </Link>
           {/*  */}
           <Sidebar.Item icon={HiArrowSmRight} className="cursor-pointer">
             SignOut
